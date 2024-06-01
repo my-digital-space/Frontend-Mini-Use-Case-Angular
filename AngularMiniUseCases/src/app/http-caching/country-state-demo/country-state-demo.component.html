@@ -1,0 +1,31 @@
+<div>
+    <p>Select Demographics!</p>
+</div>
+
+<div>
+    <form>
+        <div class="country-container">{{countriesList.length}}
+            <label>Country: </label>
+            <select name="country" [(ngModel)]="selectedCountry" (change)="onCountryChange()">
+                <option value="0">Select Country</option>
+                <option *ngFor="let country of countriesList" [value]="country.id">{{country.name}}</option>
+            </select>
+        </div>
+
+        <div class="state-container">{{statesList.length}}
+            <label>State: </label>
+            <select name="state" [(ngModel)]="selectedState" (change)="onStateChange()">
+                <option value="0">Select State</option>
+                <option *ngFor="let state of statesList" [value]="state.id">{{state.name}}</option>
+            </select>
+        </div>
+
+        <div class="city-container">{{citiesList.length}}
+            <label>City: </label>
+            <select name="city" [(ngModel)]="selectedCity" (change)="onCityChange()">
+                <option value="0">Select City</option>
+                <option *ngFor="let city of citiesList" [value]="city.id">{{city.name}}</option>
+            </select>
+        </div>
+    </form>
+</div>
