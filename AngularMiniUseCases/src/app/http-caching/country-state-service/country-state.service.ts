@@ -10,8 +10,8 @@ export class CountryStateService {
   countryUrl: string = '/getCountriesData';
   stateUrl: string = '/getStatesData';
   cityUrl: string = '/getCitiesData';
-  stateByIdUrl: string = '/getStatesDataById';
-  cityByIdUrl: string = '/getCitiesDataById';
+  stateByIdUrl: string = 'getStatesDataById';
+  cityByIdUrl: string = 'getCitiesDataById';
 
   constructor(private http: HttpClient) { }
 
@@ -28,18 +28,11 @@ export class CountryStateService {
   }
 
   getAllStatesById(countryId: number): Observable<any> {
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    headers = headers.append('countryId', countryId.toString());
-    return this.http.get(this.apiEndpoint + this.stateByIdUrl,
-      { headers: headers });
+    return this.http.get(`${this.apiEndpoint}/${this.stateByIdUrl}/${countryId}`);
   }
 
   getAllCitiesById(stateId: number): Observable<any> {
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    headers = headers.append('stateId', stateId.toString());
-    return this.http.get(this.apiEndpoint + this.cityByIdUrl,
-      { headers: headers }
-    );
+    return this.http.get(`${this.apiEndpoint}/${this.cityByIdUrl}/${stateId}`);
   }
 
 }

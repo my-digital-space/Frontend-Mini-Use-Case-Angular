@@ -34,9 +34,9 @@ public class CacheController {
     }
 
     // get all states for a particular Country ID
-    @GetMapping("/getStatesDataById")
+    @GetMapping("/getStatesDataById/{countryId}")
     public ResponseEntity<List<StateDto>> getStatesDataById(
-            @RequestHeader(required = true) Integer countryId) {
+            @PathVariable(required = true) Integer countryId) {
         return ResponseEntity.ok(cacheService.getStateListById(countryId));
     }
 
@@ -46,9 +46,9 @@ public class CacheController {
     }
 
     // get all cities for a particular State ID
-    @GetMapping("/getCitiesDataById")
+    @GetMapping("/getCitiesDataById/{stateId}")
     public ResponseEntity<List<CityDto>> getCitiesDataById(
-            @RequestHeader(required = true) Integer stateId) {
+            @PathVariable(required = true) Integer stateId) {
         return ResponseEntity.ok(cacheService.getCityListById(stateId));
     }
 

@@ -56,6 +56,15 @@ export class CountryStateDemoComponent implements OnInit {
   }
 
   onCountryChange() {
+    this.countryStateSvc.getAllStatesById(this.selectedCountry).subscribe({
+      next: (stateResp) => {
+        this.statesList = stateResp;
+      }
+    });
+
+  }
+
+  onCountryChangeLocalCache() {
     //this.statesList = this.statesList.filter(state => state.country_id == this.selectedCountry);
     // this.countryStateSvc.getAllStatesById(this.selectedCountry).subscribe({
     //   next: (stateResp) => {
