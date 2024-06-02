@@ -12,6 +12,8 @@ public interface CacheService {
 
     List<Country> getCountryList();
     List<StateDto> getStateList();
+    List<StateDto> getStateListById(Integer country_id);
     List<CityDto> getCityList();
+    List<CityDto> getCityListById(Integer state_id);
 
 }

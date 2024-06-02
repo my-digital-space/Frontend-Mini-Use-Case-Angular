@@ -36,31 +36,47 @@ public class CacheServiceImpl implements CacheService {
     public List<StateDto> getStateList() {
         List<State> stateList = stateRepository.findAll();
         List<StateDto> stateJsonList = stateList.stream()
-                .limit(1000)
-                .map(state -> {
-                    StateDto stateDto = new StateDto();
-                    stateDto.setId(state.getId());
-                    stateDto.setName(state.getName());
-                    stateDto.setCountry_id(state.getCountry().getId());
-                    return stateDto;
-                })
+                .map(this::getStateDto)
                 .collect(Collectors.toList());
         return stateJsonList;
+    }
+
+    public List<StateDto> getStateListById(Integer country_id) {
+        List<State> stateList = stateRepository.findByCountryId(country_id);
+        return stateList.stream()
+                .map(this::getStateDto)
+                .toList();
+    }
+
+    private StateDto getStateDto(State state){
+        StateDto stateDto = new StateDto();
+        stateDto.setId(state.getId());
+        stateDto.setName(state.getName());
+        stateDto.setCountry_id(state.getCountry().getId());
+        return stateDto;
     }
 
     public List<CityDto> getCityList() {
         List<City> cityList = cityRepository.findAll();
         List<CityDto> cityJsonList = cityList.stream()
-                .limit(1000)
-                .map(city -> {
-                    CityDto cityDto = new CityDto();
-                    cityDto.setId(city.getId());
-                    cityDto.setName(city.getName());
-                    cityDto.setState_id(city.getState().getId());
-                    return cityDto;
-                })
+                .map(this::getCityDto)
                 .collect(Collectors.toList());
         return cityJsonList;
+    }
+
+    public List<CityDto> getCityListById(Integer state_id) {
+        List<City> cityList = cityRepository.findByStateId(state_id);
+        return cityList.stream()
+                .map(this::getCityDto)
+                .collect(Collectors.toList());
+    }
+
+    private CityDto getCityDto(City city){
+        CityDto cityDto = new CityDto();
+        cityDto.setId(city.getId());
+        cityDto.setName(city.getName());
+        cityDto.setState_id(city.getState().getId());
+        return cityDto;
     }
 
 }

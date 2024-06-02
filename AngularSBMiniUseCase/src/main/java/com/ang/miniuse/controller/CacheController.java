@@ -6,10 +6,7 @@ import com.ang.miniuse.entities.Country;
 import com.ang.miniuse.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,9 +33,24 @@ public class CacheController {
         return ResponseEntity.ok(cacheService.getStateList());
     }
 
+    // get all states for a particular Country ID
+    @GetMapping("/getStatesDataById")
+    public ResponseEntity<List<StateDto>> getStatesDataById(
+            @RequestHeader(required = true) Integer countryId) {
+        return ResponseEntity.ok(cacheService.getStateListById(countryId));
+    }
+
     @GetMapping("/getCitiesData")
     public ResponseEntity<List<CityDto>> getCitiesData() {
         return ResponseEntity.ok(cacheService.getCityList());
     }
+
+    // get all cities for a particular State ID
+    @GetMapping("/getCitiesDataById")
+    public ResponseEntity<List<CityDto>> getCitiesDataById(
+            @RequestHeader(required = true) Integer stateId) {
+        return ResponseEntity.ok(cacheService.getCityListById(stateId));
+    }
+
 
 }
