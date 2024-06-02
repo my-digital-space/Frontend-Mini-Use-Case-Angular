@@ -23,6 +23,8 @@ export class CountryStateDemoComponent implements OnInit {
   selectedState!: any;
   selectedCity!: any;
 
+  stateCacheMap: Map<number, State[]> = new Map<number, State[]>;
+
   constructor(
     private countryStateSvc: CountryStateService,
     private cdr: ChangeDetectorRef
@@ -55,11 +57,28 @@ export class CountryStateDemoComponent implements OnInit {
 
   onCountryChange() {
     //this.statesList = this.statesList.filter(state => state.country_id == this.selectedCountry);
-    this.countryStateSvc.getAllStatesById(this.selectedCountry).subscribe({
-      next: (stateResp) => {
-        this.statesList = stateResp;
-      }
-    });
+    // this.countryStateSvc.getAllStatesById(this.selectedCountry).subscribe({
+    //   next: (stateResp) => {
+    //     this.statesList = stateResp;
+    //   }
+    // });
+
+    // Now check the Map first for the data
+    if (this.stateCacheMap.has(this.selectedCountry)) {
+      // the state list for this country is present in the map
+      // so get the data from the Map. No need to call the backend service.
+      this.statesList = this.stateCacheMap.get(this.selectedCountry) as State[];
+    } else {
+      // The selected country's state data is not present in our Map cache data
+      // call the backend service to fetch the data
+      this.countryStateSvc.getAllStatesById(this.selectedCountry).subscribe({
+        next: (stateResp) => {
+          this.statesList = stateResp;
+          // then set the cache
+          this.stateCacheMap.set(this.selectedCountry, stateResp);
+        }
+      });
+    }
   }
 
   onStateChange() {
