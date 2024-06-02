@@ -30,7 +30,7 @@ public class CacheServiceImpl implements CacheService {
 
     public List<Country> getCountryList() {
         List<Country> allCountries = countryRepository.findAll();
-        return allCountries.stream().limit(10).collect(Collectors.toList());
+        return allCountries.stream().collect(Collectors.toList());
     }
 
     public List<StateDto> getStateList() {

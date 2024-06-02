@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -10,6 +10,8 @@ export class CountryStateService {
   countryUrl: string = '/getCountriesData';
   stateUrl: string = '/getStatesData';
   cityUrl: string = '/getCitiesData';
+  stateByIdUrl: string = '/getStatesDataById';
+  cityByIdUrl: string = '/getCitiesDataById';
 
   constructor(private http: HttpClient) { }
 
@@ -23,6 +25,21 @@ export class CountryStateService {
 
   getAllCities(): Observable<any> {
     return this.http.get(this.apiEndpoint + this.cityUrl);
+  }
+
+  getAllStatesById(countryId: number): Observable<any> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    headers = headers.append('countryId', countryId.toString());
+    return this.http.get(this.apiEndpoint + this.stateByIdUrl,
+      { headers: headers });
+  }
+
+  getAllCitiesById(stateId: number): Observable<any> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    headers = headers.append('stateId', stateId.toString());
+    return this.http.get(this.apiEndpoint + this.cityByIdUrl,
+      { headers: headers }
+    );
   }
 
 }

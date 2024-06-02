@@ -19,9 +19,9 @@ export class CountryStateDemoComponent implements OnInit {
   statesList: State[] = [];
   citiesList: City[] = [];
 
-  selectedCountry: any;
-  selectedState: any;
-  selectedCity: any;
+  selectedCountry!: any;
+  selectedState!: any;
+  selectedCity!: any;
 
   constructor(
     private countryStateSvc: CountryStateService,
@@ -29,29 +29,46 @@ export class CountryStateDemoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const initialRequests: Observable<any>[] = [
-      this.countryStateSvc.getAllCountries(),
-      this.countryStateSvc.getAllStates(),
-      this.countryStateSvc.getAllCities()
-    ];
+    // const initialRequests: Observable<any>[] = [
+    //   this.countryStateSvc.getAllCountries(),
+    //   this.countryStateSvc.getAllStates(),
+    //   this.countryStateSvc.getAllCities()
+    // ];
 
-    forkJoin(initialRequests).subscribe({
-      next: ([countryResp, stateResp, cityResp]) => {
+    // forkJoin(initialRequests).subscribe({
+    //   next: ([countryResp, stateResp, cityResp]) => {
+    //     this.countriesList = countryResp;
+    //     this.statesList = stateResp;
+    //     this.citiesList = cityResp;
+    //     this.cdr.detectChanges();
+    //   }
+    // });
+
+    // only load all the countries on page load
+    this.countryStateSvc.getAllCountries().subscribe({
+      next: (countryResp) => {
         this.countriesList = countryResp;
-        this.statesList = stateResp;
-        this.citiesList = cityResp;
         this.cdr.detectChanges();
       }
     });
-
   }
 
   onCountryChange() {
-    this.statesList = this.statesList.filter(state => state.country_id == this.selectedCountry);
+    //this.statesList = this.statesList.filter(state => state.country_id == this.selectedCountry);
+    this.countryStateSvc.getAllStatesById(this.selectedCountry).subscribe({
+      next: (stateResp) => {
+        this.statesList = stateResp;
+      }
+    });
   }
 
   onStateChange() {
-    this.citiesList = this.citiesList.filter(city => city.state_id == this.selectedState);
+    //this.citiesList = this.citiesList.filter(city => city.state_id == this.selectedState);
+    this.countryStateSvc.getAllCitiesById(this.selectedState).subscribe({
+      next: (cityResp) => {
+        this.citiesList = cityResp;
+      }
+    });
   }
 
   onCityChange() {
